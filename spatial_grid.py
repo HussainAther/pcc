@@ -14,27 +14,38 @@ class PCCSimulator:
         self.size = size
         self.grid = np.random.randint(1, 4, size=(size, size))
         self.history = {'entropy': []}
+        self.mu = 0.0 # mutation/leakage rate per interaction
         # Success probabilities for P>Ch, Co>P, Ch>Co
         self.strengths = [1.0, 1.0, 1.0] 
 
     def update(self):
         new_grid = self.grid.copy()
-        for _ in range(self.size * self.size // 2): # Sampling half the grid per step for speed
+
+        for _ in range(self.size * self.size // 2):
             i, j = np.random.randint(0, self.size), np.random.randint(0, self.size)
             ni, nj = (i + np.random.choice([-1, 0, 1])) % self.size, (j + np.random.choice([-1, 0, 1])) % self.size
-            
+
             attacker, defender = self.grid[ni, nj], self.grid[i, j]
-            
-            # Interaction Logic with Probability Sliders
-            # [0]: P > Ch | [1]: Co > P | [2]: Ch > Co
-            if attacker == 1 and defender == 3 and np.random.random() < self.strengths[0]:
+
+            # --- mutation/leakage step (optional: before or after interaction) ---
+            if np.random.random() < self.mu:
+                current = new_grid[i, j]
+                choices = [1, 2, 3]
+                choices.remove(int(current))
+                new_grid[i, j] = np.random.choice(choices)
+                continue                
+
+             # --- Interaction Logic with Probability Sliders ---
+             # [0]: P > Ch | [1]: Co > P | [2]: Ch > Co
+             if attacker == 1 and defender == 3 and np.random.random() < self.strengths[0]:
                 new_grid[i, j] = 1
             elif attacker == 2 and defender == 1 and np.random.random() < self.strengths[1]:
                 new_grid[i, j] = 2
             elif attacker == 3 and defender == 2 and np.random.random() < self.strengths[2]:
                 new_grid[i, j] = 3
-        
-        self.grid[:] = new_grid[:]
+
+        self.grid = new_grid
+
 
     def get_entropy(self):
         _, counts = np.unique(self.grid, return_counts=True)
@@ -56,14 +67,18 @@ ax1.axis('off')
 
 line, = ax2.plot([], [], color='purple', lw=2)
 ax2.set_xlim(0, 100); ax2.set_ylim(0, 1.6)
-ax2.set_title("System Entropy (Homeostasis Level)")
+ax2.set_title("Shannon entropy (composition)")
 
 # Sliders
 s_p = Slider(ax_sliders[0], 'P Power', 0.1, 1.0, valinit=1.0)
 s_co = Slider(ax_sliders[1], 'Co Power', 0.1, 1.0, valinit=1.0)
 s_ch = Slider(ax_sliders[2], 'Ch Power', 0.1, 1.0, valinit=1.0)
+ax_mu = plt.axes([0.7, 0.3, 0.2, 0.03])
+s_mu = Slider(ax_mu, 'mu', 0.0, 0.05, valinit=0.0)
+
 
 def animate(frame):
+    sim.mu = s_mu.val
     sim.strengths = [s_p.val, s_co.val, s_ch.val]
     sim.update()
     sim.history['entropy'].append(sim.get_entropy())
