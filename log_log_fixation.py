@@ -1,93 +1,122 @@
+import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Load data once
-data = np.load("spatial_sweep.npz", allow_pickle=True)
-eps = data["eps_grid"]
-mean_tfix = data["mean_tfix"]
-taus_by_eps = data["taus_by_eps"].item()
 
 def fit_power_law(eps, y):
-    """
-    Fit y = C * eps^{-alpha} via linear regression in log space.
-    Returns alpha, C, alpha_se, r2.
-    """
     eps = np.asarray(eps, float)
     y = np.asarray(y, float)
 
-    m = np.isfinite(eps) & np.isfinite(y) & (eps > 0) & (y > 0)
-    x = np.log(eps[m])
-    z = np.log(y[m])
+    mask = np.isfinite(eps) & np.isfinite(y) & (eps > 0) & (y > 0)
+    eps = eps[mask]
+    y = y[mask]
 
-    # z = a + b x, where b = -alpha
-    X = np.vstack([np.ones_like(x), x]).T
-    beta, *_ = np.linalg.lstsq(X, z, rcond=None)
-    a, b = beta
-    alpha = -b
-    C = np.exp(a)
+    x = np.log(eps)
+    z = np.log(y)
 
-    # standard error of slope
-    z_hat = X @ beta
-    resid = z - z_hat
-    dof = len(z) - 2
-    s2 = (resid @ resid) / dof
-    cov = s2 * np.linalg.inv(X.T @ X)
-    b_se = np.sqrt(cov[1, 1])
-    alpha_se = b_se
+    slope, intercept = np.polyfit(x, z, 1)
+    alpha = -slope
+    C = np.exp(intercept)
 
-    # R^2
-    ss_tot = np.sum((z - z.mean())**2)
-    ss_res = np.sum(resid**2)
-    r2 = 1 - ss_res / ss_tot if ss_tot > 0 else np.nan
+    zhat = slope * x + intercept
+    ss_res = np.sum((z - zhat) ** 2)
+    ss_tot = np.sum((z - np.mean(z)) ** 2)
+    r2 = 1.0 - ss_res / ss_tot if ss_tot > 0 else np.nan
+
+    # rough SE for alpha
+    n = len(x)
+    if n > 2:
+        s2 = ss_res / (n - 2)
+        Sxx = np.sum((x - np.mean(x)) ** 2)
+        alpha_se = np.sqrt(s2 / Sxx)
+    else:
+        alpha_se = np.nan
 
     return alpha, C, alpha_se, r2
 
-# --- 1. Scaling Plot ---
-alpha, C, alpha_se, r2 = fit_power_law(eps, mean_tfix)
-print(f"Fit: mean_tfix ≈ {C:.2e} * eps^(-{alpha:.3f})  (alpha SE={alpha_se:.3f}, R^2={r2:.4f})")
 
-plt.figure()
-plt.loglog(eps, mean_tfix, marker="o", linestyle="none")
+def closest_key(d, target):
+    # keys might be floats; choose the closest one
+    keys = np.array(list(d.keys()), float)
+    if len(keys) == 0:
+        return None
+    return float(keys[np.argmin(np.abs(keys - target))])
 
-xline = np.linspace(eps[eps>0].min(), eps.max(), 200)
-yline = C * xline**(-alpha)
-plt.loglog(xline, yline, linestyle="-")
 
-plt.xlabel(r"$\epsilon$")
-plt.ylabel(r"Mean fixation time $\mathbb{E}[T_{\mathrm{fix}}]$ (MCS)")
-plt.title(rf"Scaling: $\mathbb{{E}}[T_{{fix}}]\propto \epsilon^{{-{alpha:.2f}}}$, $R^2={r2:.3f}$")
-plt.tight_layout()
-plt.savefig("spatial_sweep_scaling.png", dpi=300)
-plt.close()
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--npz", default="spatial_sweep_clean2.npz",
+                    help="NPZ file from run_spatial_sweep.py")
+    ap.add_argument("--eps_for_tau", type=float, default=0.2,
+                    help="epsilon value to show tau distribution near")
+    args = ap.parse_args()
 
-# --- 2. Pooled Lead-Time Distribution ---
-taus_all = np.concatenate([np.asarray(v, float) for v in taus_by_eps.values() if len(v) > 0])
+    data = np.load(args.npz, allow_pickle=True)
+    eps = data["eps_grid"]
+    mean_tfix = data["mean_tfix"]
+    taus_by_eps = data.get("taus_by_eps", None)
+    if taus_by_eps is not None:
+        taus_by_eps = taus_by_eps.item()
 
-plt.figure()
-plt.hist(taus_all, bins=30)
-plt.xlabel(r"Lead time $\tau = T_{\mathrm{fix}} - T_{\mathrm{warn}}$ (MCS)")
-plt.ylabel("Count")
-plt.title(rf"Pooled lead-time distribution (N={len(taus_all)})")
-plt.tight_layout()
-plt.savefig("pooled_lead_time_dist.png", dpi=300)
-plt.close()
+    alpha, C, alpha_se, r2 = fit_power_law(eps, mean_tfix)
+    print(f"Fit: mean_tfix ≈ {C:.2e} * eps^(-{alpha:.3f})  (alpha SE={alpha_se:.3f}, R^2={r2:.4f})")
 
-print("Mean tau:", taus_all.mean())
-print("Median tau:", np.median(taus_all))
-
-# --- 3. Target Epsilon Distribution ---
-def save_tau_hist_for_eps(eps_target=0.2, bins=25):
-    keys = np.array([float(k) for k in taus_by_eps.keys()])
-    k_val = float(keys[np.argmin(np.abs(keys - eps_target))])
-    taus = np.asarray(taus_by_eps[str(k_val)], float)
+    # plot scaling
+    mask = np.isfinite(mean_tfix) & (eps > 0)
+    x = eps[mask]
+    y = mean_tfix[mask]
 
     plt.figure()
-    plt.hist(taus, bins=bins)
+    plt.scatter(x, y)
+
+    # fitted line
+    xs = np.linspace(x.min(), x.max(), 200)
+    ys = C * xs ** (-alpha)
+    plt.plot(xs, ys)
+
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.xlabel(r"$\epsilon$")
+    plt.ylabel(r"Mean collapse time $E[T]$ (MCS)")
+    plt.title(rf"Scaling: $E[T]\propto \epsilon^{{-{alpha:.2f}}}$, $R^2={r2:.3f}$")
+    plt.tight_layout()
+    plt.savefig("spatial_sweep_scaling.png", dpi=200)
+
+    # pooled tau distribution (safe even if empty)
+    if taus_by_eps is None:
+        print("No lead-time dictionary found in NPZ; skipping tau plots.")
+        return
+
+    tau_arrays = [np.asarray(v, float) for v in taus_by_eps.values() if len(v) > 0]
+    if len(tau_arrays) == 0:
+        print("No lead-time data found; skipping pooled distribution plot.")
+        return
+
+    taus_all = np.concatenate(tau_arrays)
+
+    plt.figure()
+    plt.hist(taus_all, bins=30)
     plt.xlabel(r"Lead time $\tau$ (MCS)")
     plt.ylabel("Count")
-    plt.title(rf"Lead-time distribution at $\varepsilon={k_val:.3f}$ (N={len(taus)})")
+    plt.title(f"Pooled lead-time distribution (N={len(taus_all)})")
     plt.tight_layout()
-    plt.savefig(f"lead_time_dist_eps_{k_val:.2f}.png", dpi=300)
-    plt.close()
+    plt.savefig("pooled_lead_time_dist.png", dpi=200)
 
-save_tau_hist_for_eps(eps_target=0.2)
+    # show tau distribution for epsilon ~ eps_for_tau (closest key)
+    k = closest_key(taus_by_eps, args.eps_for_tau)
+    if k is None or len(taus_by_eps.get(k, [])) == 0:
+        print(f"No tau data near epsilon={args.eps_for_tau}.")
+        return
+
+    taus_k = np.asarray(taus_by_eps[k], float)
+    plt.figure()
+    plt.hist(taus_k, bins=25)
+    plt.xlabel(r"Lead time $\tau$ (MCS)")
+    plt.ylabel("Count")
+    plt.title(f"Lead-time distribution near ε={k:.3f} (N={len(taus_k)})")
+    plt.tight_layout()
+    plt.savefig(f"lead_time_dist_eps_{k:.3f}.png", dpi=200)
+
+
+if __name__ == "__main__":
+    main()
