@@ -1,0 +1,19 @@
+
+===================================
+Spatial sweep starting
+L=50, trials=10, T_max=5000
+===================================
+
+Running eps = 0.150
+  trial 5/10
+  trial 10/10
+eps=0.150 | fix_prob=0.00 | mean_tfix=nan | n_taus=0
+
+Running eps = 0.300
+  trial 5/10
+  trial 10/10
+eps=0.300 | fix_prob=0.00 | mean_tfix=nan | n_taus=0
+
+===================================
+Results saved to spatial_L50.npz
+===================================

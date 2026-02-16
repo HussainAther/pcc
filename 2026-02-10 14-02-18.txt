@@ -1,0 +1,440 @@
+Project Sync / Status Update Summary 
+Publication & Manuscript Status 
+IEEE TMI resubmission: 
+Status: The new manuscript has been resubmitted to IEEE Transactions on Medical Imaging. 
+Communication: Bradley is being kept in the loop. 
+Data management: Reminder to maintain robust backups since local backups are not being kept by all parties. 
+Risk: Confusion due to Leyla/Leylith and Varshat producing a new manuscript after a period of absence; coordination is needed to prevent overlap. 
+C. elegans hypergraph section: 
+Current state: The manuscript is essentially complete except for the hypergraph of the C. elegans lineage. 
+Objective: Publish with a full lineage tree integrated with a selected hypergraph representation and make the dataset available. 
+Next step: Bradley proposed several hypergraph approaches; one must be selected and the section finalized. 
+Membrane Circles Model (Amphiphile Membranes) 
+Modeling approach: 
+Open system: Use a variable number of circles that can appear and disappear; a fixed circle count leads to unrealistic packing and porosity behavior. 
+Phase targets: Demonstrate three states—no membrane, fluid, and solid—and evaluate whether transitions align with Diemer’s predictions. 
+Membrane thickness and composition: 
+Amphiphiles: Model membranes composed of monocarboxylic and dicarboxylic acids; a circle can represent a dicarboxylic acid or two linked monocarboxylic acids. 
+Empirical inputs: Extract chain-length distributions for both classes from meteorite literature; sample chains randomly with the constraint that selections rarely exceed the membrane thickness. 
+Interactions and metrics: 
+van der Waals interactions: Define interaction strength for neighboring chains of differing lengths (e.g., whether the shorter length sets the interaction scale). 
+Porosity metric: Porosity is the total area not covered by circles. 
+Expected signatures: If Diemer’s model holds, porosity vs. density may exhibit step-like transitions; otherwise, curves may be smoother. 
+Coordination: 
+Notify when ready to begin work; conceptual guidance is available. 
+PCC (Pressure–Chaos–Control) Non-Transitive Dynamics (Exploratory) 
+Concept overview: 
+Triad of strategies—pressure (aggression), control (optimization/prediction), and chaos (unpredictability)—forming a non-transitive rock–paper–scissors cycle. 
+Hypothesis: Non-transitive limit cycles could provide robustness in systems managing energy and information, preventing stagnation at Nash-like equilibria. 
+References and analogies: 
+Observations from competitive gaming; lizard mating strategies with morph-specific dynamics; suggested investigations in social insects (e.g., bees) and axolotl jaw-type polymorphisms. 
+Methods and analysis: 
+Tools: Replicator equations, Shannon entropy, Kolmogorov complexity, genetic algorithms. 
+Validation: Agent-based simulations (e.g., predator–prey or attraction models) to detect non-transitive cycles and quantify information/fitness dynamics. 
+Publication path: 
+If results are substantive, consider submission to an evolutionary biology journal. 
+Additional Notes 
+Reading: Ongoing review of “Artificial Intelligence: A Modern Approach” (Russell & Norvig) for historical context. 
+Literature to review: A paper on ballistic motion of molecules will be read to assess relevance. 
+External feedback: A draft was shared with Morgan (Biophone Club, San Francisco); minimal feedback received. 
+Personal updates: Family medical emergency (grandfather in ER); physical therapy and mobility exercises ongoing. 
+Risks & Open Questions 
+Manuscript overlap: Potential duplication/conflict with Leyla/Leylith and Varshat’s work requires clarification. 
+Hypergraph selection: Final choice of hypergraph representation for C. elegans lineage remains open. 
+Data availability: Need reliable meteorite-derived distributions for mono- and di-carboxylic acids. 
+Interaction model: Rule for van der Waals interactions between mixed-length chains is not yet defined. 
+Decisions 
+Proceed with the IEEE TMI resubmission while keeping Bradley informed. 
+Use porosity defined as the area not covered by circles in the membrane model. 
+Target demonstration of three membrane states and compare outcomes to Diemer’s predictions. 
+Action Items 
+@Speaker2: Maintain robust backups and share updated manuscript packages with the team. 
+@Speaker2: Follow up with @Bradley to select a hypergraph approach for C. elegans and complete that section. 
+@Speaker2: Clarify overlap with Leyla/Leylith and Varshat’s manuscript and align on authorship/scope. 
+@Speaker2: Notify @Speaker1 when ready to begin work on the membrane circles model. 
+@Speaker2: Gather meteorite literature on chain-length distributions of mono- and di-carboxylic acids. 
+@Speaker2: Prototype an open-system simulation with variable circle count and compute porosity. 
+@Speaker2: Define and justify a van der Waals interaction rule for mixed-length amphiphiles. 
+@Speaker2: Evaluate phase behavior (no membrane, fluid, solid) and compare transitions to Diemer’s predictions. 
+@Speaker1: Review the ballistic motion of molecules paper and assess relevance to ongoing models. 
+@Speaker2: Continue exploring the PCC non-transitive framework via simulations; investigate lizard morphs, social insects, and axolotl jaw-type polymorphisms; consider drafting for an evolution journal if results warrant. 
+@Team: Consider whether a shared EndNote library would reduce friction and define a backup/sharing protocol. 
+ 
+
+Speaker 1 00:00 
+Oh, you have? Okay, terrific. 
+
+Speaker 2 00:02 
+Because like I told you before, I'm going to take up as much work as I need so you don't have to deal with anything you don't need to. So stuff like formatting, citations, sources, like menial things, I will take care of it myself. 
+
+Speaker 1 00:18 
+Okay, stupid question. Would it be easier to have a single end note library that we can send back and forth? 
+
+Speaker 2 00:29 
+Yeah, that would be easier, but I don't want to make more work for you so I can do it myself. 
+
+Speaker 1 00:36 
+Okay, but if I write something, I use my EndNote library. So I'm trying to make it easier on you. 
+
+Speaker 2 00:48 
+I have many decades of my life ahead of me. I can do whatever. 
+
+Speaker 1 00:53 
+I suppose I don't. 
+
+Speaker 3 00:54 
+I know. 
+
+Speaker 1 00:55 
+Farewell. Okay, everyone. 
+
+Speaker 2 00:59 
+My grandfather was rushed to the ER recently. 
+
+Speaker 1 01:04 
+Oh, he was. 
+
+Speaker 2 01:07 
+hard to talk, but we're all just taking care of him. 
+
+Speaker 1 01:11 
+Okay. Well, if you talk to him, give him my best wishes. Okay. Okay. Not only may be important in your personal life, but he gives you 
+
+Speaker 2 01:29 
+my grandparents, like, they were, I mean, my, my parents and my grandparents. 
+
+Speaker 1 01:36 
+Okay. At any rate, I don't have much to say. You just sent some manuscript. What's that about? 
+
+Speaker 2 01:43 
+I resubmitted the new manuscript to IEEE TMI, okay? 
+
+Speaker 1 01:48 
+oh that's that is okay the resubmission okay i'm not keeping backups here so uh please be careful on backups 
+
+Speaker 2 01:58 
+I'm also keeping Bradley in the loop on things too. 
+
+Speaker 1 02:03 
+OK, now, in regard to that, it's a little confused. Leylith coming out with this new manuscript is very confusing.
+
+And since he's disappeared for a while, basically, we were asking whether Bradley to finish the manuscript. And I agree with you that the manuscript was totally written, except for the hypergraph of C. elegans. 
+
+Speaker 2 02:34 
+Because I think Leyla and Varshat, when they reached out, they would realize that, yep. 
+
+Speaker 1 02:41 
+At any rate, that's one question that needs to be settled. Bradley had various ideas on the hypergraph and got to pick one. So we publish it where people have a full lineage tree with a hypergraph. Okay, and make that available. Okay, that's the goal of that section of the paper, and that should be finished.
+
+Okay, I don't know what they wrote. I haven't read it yet. Okay. 
+
+Speaker 2 03:30 
+Okay, okay, I'll just keep in touch, I'll follow up. 
+
+Speaker 1 03:35 
+OK, I'll say. 
+
+Speaker 2 03:36 
+Sorry. 
+
+Speaker 1 03:40 
+Tell me when you're ready to work on the circles model for membranes. I've been thinking about it. One of the problems is this. And that is we can't have a fixed number of circles. If we have a fixed number of circles, then as the number increases, the packing gets harder. And the pores go down. And it doesn't represent no membrane. Remember, we have three states, no membrane, liquid, and solid.
+
+That's predicted by Deere. And the question is, can we demonstrate that? I think we need an open system where the circles come on and off. OK. I'll take those on you. But now, the other thing to consider, which I've been trying to think through, is the thickness of the membrane. OK? Now, the membrane can be made of carboxylic acids or dicarboxylic acids or both. OK? It seems to me what we need to do is get out of the meteorite literature the distribution of both. So we have two distributions. And then select them at random subject to the constraint that they rarely exceed the current thickness of the membrane. OK?
+
+So basically, the circle represents either a dicarboxylic acid or two monocarboxylic acids attached to each other. And then we have to think, if two carboxylic acids are next to each other or three of them, what's the van der Waals force? OK? Well, I think that's the key. Once we get that, you see, for instance, suppose you have a carboxylic acid that's five units long and another that's three units long. What do you use for the van der Waals force? Three or five? I would guess it would be three. But yeah, we can't do that. 
+
+Speaker 2 06:19 
+I don't know. 
+
+Speaker 1 06:22 
+Yeah, it seems to me that basically there is no literature on mixed ampophils, that everybody assumes all the ampophils are the same and make a perfect bilayer membrane. And that's obviously false. But if you look at all the pictures, that's what's in the back of their mind. They're not thinking it through.
+
+OK. So I think our first task is to demonstrate the three states, no membrane, fluid, and solid, and see if that agrees with, see if we get results that agree with DIMR, and then. 
+
+Speaker 2 07:09 
+are they transitive so they all they can all switch back and forth but it's It's linear. 
+
+Speaker 1 07:20 
+Oh, yeah, well, the question is whether the three steps. OK, in terms of the porosity. It's just a three-step check, I see.
+
+OK, porosity is sort of obvious. Porosity is just the area not covered by any circles. 
+
+Speaker 2 07:34 
+Yeah, it's interesting. I've seen formations in which the movements, you know, you don't consider it considering you go through one state to get to the other.
+
+And then, yeah, to what extent is Is the system making a change to the... 
+
+Speaker 1 07:56 
+Well, it's just that I expect that there's a step function, if Diemer is correct. If he isn't correct, it will be a smoother curve. 
+
+Speaker 2 08:09 
+That's what I was trying to say. 
+
+Speaker 1 08:11 
+Yeah, I'm just saying in terms of porosity, the area not occupied by circles is the porosity. You don't have to fit a circle in between them. See what I mean? 
+
+Speaker 2 08:23 
+actually on a completely unrelated notes there was okay I came up with that I mean it's not completely original it's but it's a it's a system of energy conservation that I formulated with myself. 
+
+Speaker 1 08:40 
+Oh! 
+
+Speaker 2 08:41 
+hear me out for a second okay i used to play a lot of competitive video games just hear me out for a second and you play the video games where you fight against somebody else in the video game like a fighting game okay right yeah and one thing i would notice in competitive video games there would be these three styles that a lot of gamers would play that would form a rock paper scissors triangle so they'd go yeah so a three-pole framework uh for a systemic homeostasis which we can call pressure control and chaos and it's a type of survival of the fittest in which systems and people and groups um you know can process and move through things differently and um yeah so so so it's it's an interesting one too this is completely non-secret it doesn't relate to this but it's a perfect example of a transitive like like it's transitive as in like um oh sorry it's non-transitive it's non-transitive excuse me so stability is not a peak in a system stability is a non-transitive cycle that prevents any single strategy from having a monopoly or having like a like a dominance over the other three.
+
+So basically, you remember I told you, pressure, chaos, and control. I want you to imagine there were three types of lizards that were observed that would show these mating strategies. One was the orange ones that were pressure, and they were very aggressive. They wanted to dominate the others, and it was like they're very macho and very strong. The second one are the blue ones that are more cooperative and more intelligent and work together. And the third one were yellow lizards that would actually mimic female lizards and infiltrate the groups that the men owned. And for the longest time, these three were at a bit of a survival of the fittest in some ways.
+
+And I wanted to see in some ways how that could be related to... So do you see what it is? It's pressure, chaos, and control. So ideally pressure is about being aggressive, being forceful. Chaos is about being random, and then control is about trying to be very rigid and being a very... Okay. So this is... This is completely non-sequitur, but it is something that I'm exploring across different
+
+Speaker 1 11:01 
+oh okay sounds good just keep once again if this fusion stuff pans out uh during your lifetime electricity will be free okay so the problem might become irrelevant okay okay just just keep that in mind okay now the other thing is okay uh Natalie could you give me the Kindle a second please
+
+Speaker 3 11:41 
+on the test you passed yesterday. Oh yesterday I passed. 
+
+Speaker 1 11:45 
+I passed a brilliance test. 
+
+Speaker 3 11:49 
+have events. 
+
+Speaker 1 11:50 
+I don't have dementia, believe it or not. Okay.
+
+Now what's going on with this thing? Trying to get some name. Okay. I got bored yesterday and I started reading a book that I happened to have in my Kindle called Artificial Intelligence. Okay. And the curious thing about it, see if I can get it, I don't know if I can get it. 
+
+Speaker 3 12:29 
+get back to the cover. Let's see. Yes, I can. Turn it back. 
+
+Speaker 1 12:40 
+Okay, the book is called artificial intelligence, a modern approach and the curious thing about it, there's a lot of history in it and I have read or met many of the authors. Okay, so during my 80 years, I've been sort of following artificial intelligence without an idea.
+
+Okay, okay. You know, like a, he had a section on Joshua Lederberg. Well, I, I, I met him and sat down with him for a while. Thank you. 
+
+Speaker 3 13:28 
+Oh. 
+
+Speaker 1 13:29 
+Anyway, there are a number of people I've already met and had conversations with, even though I didn't know we were talking about artificial intelligence. And they may not have known it either at the time, but they're mentioned in this book.
+
+So I can't send it over, because it's in Kindle, but it's called Artificial Intelligence A Modern Approach, third edition by Russell Norvig, or VIG. Okay, it's probably too simple for you, but for me it's an interesting overview. 
+
+Speaker 3 14:20 
+OK. 
+
+Speaker 2 14:23 
+You know so 
+
+Speaker 3 14:26 
+Anyways. 
+
+Speaker 2 14:27 
+In the prebiotic environments, when we go from like dead, you know, Like chemistry to the living systems, you know, yeah 
+
+Speaker 1 14:41 
+Well, that's one of the mysteries of life. Can we do it? 
+
+Speaker 2 14:46 
+Okay, what does it depend upon? What are the requirements? What can you do with it?
+
+Yeah, I was trying to use that that three way that rock paper scissors thing. Okay, so things like pressure is how structure is formed, control is how the energy would be optimized, how it's being used. So like catalysis, right? And then chaos is like entropy. Okay, prevent this, which may seem like it's just randomness, but chaos and entropy is more so like disorder preventing the system from overfitting to one environment and make sure it can be like robust in the long term. What I want to describe is that if there could be a completely new form of so like this is This is how you can actually avoid like Nash equilibrium. So like a reaction that just becomes stale and doesn't adapt. 
+
+Speaker 1 15:32 
+Yeah, I've already written about this from a slightly different point of view. Starting from Diemer's stuff, I calculated on an earth that is sterile, okay, how many vesicles would form? And here's up to 10 to the 40th, way beyond what he quotes as trillions. He just pulls trillions out of the air.
+
+But I calculated 10 to the 40th is much bigger than trillions. The thing is, each one is an experiment, and some of them can deviate drastically from equilibrium. 
+
+Speaker 2 16:14 
+yeah okay but did you mention specifically that um you know that that loop that three-way no of course yeah because this is this is something that i'm beginning to explore myself and i actually but i did see it first in competitive video games so when you see people play the video games they're the fighting games right there would be three different styles there'd be the pressure who are very aggressive there'd be control which they try to predict you they try to predict your next move and optimize and then there'd be chaos the people that try to throw you off by being
+
+Speaker 1 16:44 
+Oh, that's the way I play chess. 
+
+Speaker 2 16:47 
+You liked us? You liked us? No. 
+
+Speaker 1 16:51 
+Oh, not particularly, but when I play somebody, I use kale. 
+
+Speaker 2 16:56 
+You can throw off the Masters by just doing things that they never expected. 
+
+Speaker 3 17:01 
+Yeah, so and people 
+
+Speaker 1 17:04 
+Thank you. Thank you. Thank you. 
+
+Speaker 2 17:04 
+My take is that life could be seen as the emergence of this limit cycle that could have a Shannon entropy, you could calculate a Shannon entropy, the system refuses to settle into, you know, like the system doesn't die, it doesn't go into a simplex. And instead of life being some sort of accident of some kind, it's a stability requirement for any complex system that deals with energy and information, right?
+
+And it's interesting because the lizard thing, they've been doing that for, they've been, the male lizards are basically playing rock paper scissors for thousands of years to compete for female mates. And I think it's, you know, like, like that, that's so damn interesting, you know, because I told you, it's the, it's the orange ones, the aggressive ones beat the blue ones who are like, who work together, you know, and the blue ones beat. Okay. 
+
+Speaker 1 18:02 
+Okay, by the way, one thing you might want to check is in axolotls, which are, you know, a special kind of salamander, they're the ones that can live up. Okay, in axolotls, you get two jaw types, which correspond perhaps to the rest of the random, I don't know, but you might want to look up jaw types in axolotls, and these seem to be spontaneous variations. 
+
+Speaker 2 18:40 
+talking about like like the upper jaw and the lower jaw you mean like two different types of 
+
+Speaker 1 18:47 
+Oh yeah, yeah, the joes are different. 
+
+Speaker 2 18:48 
+No, no, okay, so you're saying the upper and the lower jaw are two different 
+
+Speaker 1 18:53 
+Yes, they come out in two different types, and they're two different personality types. Okay? You just might want to read about that. 
+
+Speaker 2 19:04 
+So basically, you know, and this is it is pretty what I described is pretty specific, right? You don't see it at all areas.
+
+It needs to be like a rock, paper, scissors thing, right? So non-transitive. 
+
+Speaker 1 19:18 
+Yeah, you must look at social insects like bees. 
+
+Speaker 2 19:26 
+the way 
+
+Speaker 1 19:29 
+Drones, where's the Queens? into those categories okay so uh yeah pursue it until you either come up with something to eat 
+
+Speaker 2 19:48 
+even though they notice things like the the lizard dynamic there's nothing there's nothing specifically describing that specific model. 
+
+Speaker 3 19:57 
+Oh, yeah, okay. 
+
+Speaker 1 19:58 
+Yeah. Yeah. Turn me up. 
+
+Speaker 2 20:02 
+through equilibrium, I don't know. 
+
+Speaker 1 20:05 
+Yeah, right, so you're coming to equilibrium. 
+
+Speaker 2 20:12 
+It's like Nash equilibrium, but I don't think, you know. Yeah, yeah. People ask me where I... I first observed it, I'll tell them video games. 
+
+Speaker 1 20:21 
+Well, I don't play video games, so I wouldn't have observed it. 
+
+Speaker 2 20:25 
+There was, so there basically used to be these three boys that were like the top three at the competitive video game scene, right? And each of them were at each other's throats in that rock, paper, scissors thing. It was really fun.
+
+It was like for competitive games, so they don't just play it, but... Everybody watches, they have the, they rank, they fight for the best, you know. 
+
+Speaker 1 20:44 
+And maybe you could do that for chess and IBM. 
+
+Speaker 2 20:49 
+The thing is, you know what's really funny, I've never played chess before, I do not. 
+
+Speaker 1 20:57 
+Oh! 
+
+Speaker 2 21:01 
+The thing is, I don't know if it works so well in chess, because in chess the board is static, you aim for checkmates, the truth is, even if like a novice, like a beginner, even if they play a bit more off the book, the grandmasters still beat them, you might turn them off the hook here or there, but the grandmasters still got to more or less beat them, yeah? 
+
+Speaker 3 21:25 
+Yeah. 
+
+Speaker 1 21:28 
+okay okay yeah okay yeah you might want to try chess and be and do the chaos 
+
+Speaker 2 21:40 
+It's called, yeah, the three other, pressure and chaos control, PCC, PCC, pressure and chaos control. 
+
+Speaker 1 21:44 
+Yeah, I know what your preconception is, but if you learn how to play chess, you might play against somebody who's good, but you take the chaos point of view. 
+
+Speaker 2 21:59 
+Because chaos isn't about being random. You don't just flip the table.
+
+Chaos is about being unpredictable, you know? For whatever reason, the way you play isn't easily read by a grandmaster, you know? Like, for example, if there's a certain set of archetypes, then the chaotic one doesn't fit into those archetypes very easily. 
+
+Speaker 1 22:20 
+okay well if you know somebody who plays chess you might want to 
+
+Speaker 2 22:31 
+sometimes when I have time. 
+
+Speaker 1 22:34 
+You're right, Chase has fixed moves. Nevertheless, it's quite flexible. OK, that's what you do. Well, so you've got a test there. I'm saying you can actually do a personal test. 
+
+Speaker 2 22:57 
+Yeah, interesting stuff. OK, anything else he needs? I've done some simulations on it. I showed my paper to Morgan. To Morgan Hugh from the wall. Yeah, I think he didn't really say anything. 
+
+Speaker 1 23:12 
+Oh, really? Okay. This is a Morgan who goes to Brazil. 
+
+Speaker 2 23:18 
+this stuff in San Francisco. I think he works at someplace called Biophone Club. So yeah.
+
+Oh, okay. mathematics see like replicator equations like Kolmogorov, Kolmogorov complexity, Shannon entropy, and computer scientists you know they all see the genetic algorithms. Once again, like I said before, the biggest thing about what separates my theory from what anybody else has thought about before is because I introduced this third poll called Chaos. So
+
+Speaker 1 23:49 
+Yeah. You know, by the way, I've got an article I haven't read yet, I downloaded it on ballistic motion of molecules. Okay, which if you think about it, actually you expect, in other words, occasionally a molecule will jump much faster than the norm. Okay, so I got to read this paper, see if this is interesting. Okay. 
+
+Speaker 2 24:21 
+Um, why don't we just end things for now? I want you to get back to taking care of yourself Thank you. 
+
+Speaker 1 24:28 
+Yeah, I've had a walk with a walker with my physical therapist, and a big lesson in exercising. So, yes, I'm a little bit tired. 
+
+Speaker 2 24:40 
+Yeah, so like, like Shannon defined information, which is control. But he didn't he didn't really apply to evolutionary competition. I don't think so.
+
+Made it made it you know, Smith made it Smith. Talk about game theory. 
+
+Speaker 1 24:54 
+It's close, yeah. 
+
+Speaker 2 24:55 
+Yeah, and Senerva was the biologist who studied the cycles and the lizards, and it's really interesting that like creatures, like organisms, animals, like you and me, but they're lizards, They're playing rock-paper-scissors to see who wins, and you never think about things in life that way, because everyone thinks about things in life like a hierarchy, a ranking, the best companies make it. 
+
+Speaker 1 25:21 
+Always try to optimize. 
+
+Speaker 2 25:25 
+Whoever is the most intelligent, the most- 
+
+Speaker 1 25:28 
+Yes, in other words, you pick a criteria and you optimize it. 
+
+Speaker 2 25:33 
+Yeah, and this is this is very very different obviously because it's not about picking the right one. It's more So how well can you 
+
+Speaker 1 25:41 
+I'll give you a challenge, if you get somewhere with it, send it to an evolution journal. 
+
+Speaker 2 25:48 
+My undergrad PI for I did bioinformatics research of Umbria. He's he's up. So he did evolutionary work, too. He's there years. 
+
+Speaker 1 26:00 
+Okay. At any rate, sometimes when you get these ideas they're good, sometimes they're dead ends. I've got lots of dead ends in my life. 
+
+Speaker 2 26:11 
+You know and that's why I almost hesitated because I've been thinking about this in my head for months now And I almost thought to myself like Like oh my goodness. There's no way Hussein just thought about a completely new information theory or systemic theory You know and like it's like well.
+
+I mean I don't know I've been searching through the literature, and it does have merit
+
+Speaker 1 26:32 
+Yeah, we'll see if you can do a simulation of it. 
+
+Speaker 2 26:35 
+actually observe it in like game theory type things with either like predator and prey with like attractiveness like maybe put like a bunch of simulate a bunch of people and agents in a room and see who they'd be attracted to based off of like like some sort of like fitness value you know
+
+Speaker 3 26:52 
+Yeah. 
+
+Speaker 2 26:53 
+So it is it is and whatever happens happens and if it's just meant to be a bit more of like a Corollary of something existing then that's still worth it to just explore, you know 
+
+Speaker 1 27:04 
+Okay, okay, take care. 
+
+Speaker 2 27:07 
+Thanks. 
