@@ -1,106 +1,210 @@
-# run_spatial_sweep.py
-from __future__ import annotations
+#!/usr/bin/env python3
+"""
+run_spatial_sweep.py
+
+Spatial stochastic sweep over epsilon values.
+
+Computes:
+    - fixation probability
+    - mean fixation time
+    - entropy early-warning lead times (tau)
+
+Uses spatial_adapter.run_spatial_trial()
+
+Outputs .npz file containing:
+    eps_grid
+    mean_tfix
+    fix_prob
+    taus_by_eps
+    metadata (L, T_max, sample_every, trials)
+"""
+
 import argparse
 import numpy as np
+
 from spatial_adapter import run_spatial_trial
-from lead_time import warn_time_from_trace
+
+
+# ============================================================
+# Argument parsing
+# ============================================================
+
+def parse_args():
+
+    parser = argparse.ArgumentParser()
+
+    # epsilon grid options
+    parser.add_argument("--eps_min", type=float, default=0.0)
+    parser.add_argument("--eps_max", type=float, default=0.4)
+    parser.add_argument("--eps_n", type=int, default=9)
+
+    parser.add_argument(
+        "--eps_values",
+        type=float,
+        nargs="+",
+        default=None,
+        help="Explicit epsilon values (overrides eps_min/max/n)"
+    )
+
+    # simulation parameters
+    parser.add_argument("--sigma", type=float, default=0.0)
+    parser.add_argument("--trials", type=int, default=40)
+    parser.add_argument("--seed", type=int, default=0)
+
+    parser.add_argument("--L", type=int, default=100)
+    parser.add_argument("--T_max", type=int, default=50000)
+    parser.add_argument("--sample_every", type=int, default=50)
+
+    parser.add_argument("--out", type=str, default="spatial_sweep.npz")
+
+    return parser.parse_args()
+
+
+# ============================================================
+# Lead time detection
+# ============================================================
+
+def compute_tau(t, H, t_fix, threshold_quantile=0.2, k=5):
+    """
+    Compute early-warning lead time tau = T_fix − T_warn
+
+    Warning defined as sustained entropy-rate decline.
+    """
+
+    t = np.asarray(t, float)
+    H = np.asarray(H, float)
+
+    if len(t) < k + 2:
+        return None
+
+    dH = np.gradient(H, t)
+
+    finite = np.isfinite(dH)
+    if finite.sum() < k:
+        return None
+
+    threshold = np.quantile(dH[finite], threshold_quantile)
+    threshold = min(threshold, 0.0)
+
+    consec = 0
+
+    for i, val in enumerate(dH):
+
+        if val < threshold:
+            consec += 1
+
+            if consec >= k:
+                warn_idx = i - (k - 1)
+                t_warn = t[warn_idx]
+                return t_fix - t_warn
+
+        else:
+            consec = 0
+
+    return None
+
+
+# ============================================================
+# Main sweep
+# ============================================================
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--eps_min", type=float, default=0.0)
-    ap.add_argument("--eps_max", type=float, default=0.4)
-    ap.add_argument("--eps_n", type=int, default=9)
-    ap.add_argument("--sigma", type=float, default=0.10, help="noise level")
-    ap.add_argument("--trials", type=int, default=40)
-    ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--L", type=int, default=60)
-    ap.add_argument("--T_max", type=int, default=50_000)
-    ap.add_argument("--sample_every", type=int, default=50)
-    ap.add_argument("--out", type=str, default="spatial_sweep.npz")
-    args = ap.parse_args()
 
-    eps_grid = np.linspace(args.eps_min, args.eps_max, args.eps_n)
+    args = parse_args()
 
-    fix_prob = np.zeros_like(eps_grid)
-    mean_tfix = np.zeros_like(eps_grid)
-    median_tfix = np.zeros_like(eps_grid)
+    rng = np.random.default_rng(args.seed)
 
-    example_traces = {}
+    # choose epsilon grid
+    if args.eps_values is not None:
+        eps_grid = np.array(args.eps_values, dtype=float)
+    else:
+        eps_grid = np.linspace(args.eps_min, args.eps_max, args.eps_n)
+
+    mean_tfix = []
+    fix_prob = []
     taus_by_eps = {}
-    thr_by_eps = {}
 
-    for i, eps in enumerate(eps_grid):
-        fixes = []
-        tfixes = []
-        traces = []
+    print("\n===================================")
+    print("Spatial sweep starting")
+    print(f"L={args.L}, trials={args.trials}, T_max={args.T_max}")
+    print("===================================")
+
+    for eps in eps_grid:
+
+        print(f"\nRunning eps = {eps:.3f}")
+
+        tfix_list = []
         taus = []
-        used_thrs = []
 
-        for k in range(args.trials):
-            seed = args.seed + 10_000 * i + k
-            res = run_spatial_trial(
-                epsilon=float(eps),
-                sigma_noise=float(args.sigma),
-                seed=int(seed),
+        for trial in range(args.trials):
+
+            if (trial + 1) % 5 == 0:
+                print(f"  trial {trial+1}/{args.trials}", flush=True)
+
+            seed = int(rng.integers(0, 2**31 - 1))
+
+            result = run_spatial_trial(
+                epsilon=eps,
+                sigma_noise=args.sigma,
+                seed=seed,
                 L=args.L,
                 T_max=args.T_max,
                 sample_every=args.sample_every,
             )
 
-            fixes.append(res.fixated)
-            tfixes.append(res.t_fix)
+            if result.fixated:
 
-            # Syntax fixed: t_stop is now defined in lead_time.py
-            Twarn, used_thr = warn_time_from_trace(
-                res.t, res.H,
-                k=5,
-                threshold=None,
-                threshold_quantile=0.20,
-                smooth_w=9,
-                t_stop=res.t_fix if res.fixated else None
-            )
-            used_thrs.append(used_thr)
+                tfix_list.append(result.t_fix)
 
-            if res.fixated and (Twarn is not None) and (res.t_fix >= Twarn):
-                taus.append(float(res.t_fix - Twarn))
+                tau = compute_tau(
+                    result.t,
+                    result.H,
+                    result.t_fix
+                )
 
-            if len(traces) < 5:
-                traces.append({
-                    "t": res.t, "H": res.H, "p": res.p,
-                    "fixated": res.fixated, "t_fix": res.t_fix,
-                    "Twarn": Twarn, "used_thr": used_thr
-                })
+                if tau is not None:
+                    taus.append(tau)
 
-        fixes_arr = np.array(fixes, dtype=bool)
-        tfixes_arr = np.array(tfixes, dtype=float)
-
-        fix_prob[i] = fixes_arr.mean()
-        if fixes_arr.any():
-            mean_tfix[i] = tfixes_arr[fixes_arr].mean()
-            median_tfix[i] = np.median(tfixes_arr[fixes_arr])
+        # compute statistics
+        if len(tfix_list) > 0:
+            mean_fix = float(np.mean(tfix_list))
+            prob_fix = len(tfix_list) / args.trials
         else:
-            mean_tfix[i] = np.nan
-            median_tfix[i] = np.nan
+            mean_fix = np.nan
+            prob_fix = 0.0
 
-        example_traces[str(eps)] = traces
+        mean_tfix.append(mean_fix)
+        fix_prob.append(prob_fix)
+
         taus_by_eps[str(eps)] = np.array(taus, dtype=float)
-        thr_by_eps[str(eps)] = np.array(used_thrs, dtype=float)
 
-        print(f"eps={eps:.3f} | fix_prob={fix_prob[i]:.2f} | mean_tfix={mean_tfix[i]:.1f} | n_taus={len(taus)}")
+        print(
+            f"eps={eps:.3f} | "
+            f"fix_prob={prob_fix:.2f} | "
+            f"mean_tfix={mean_fix:.1f} | "
+            f"n_taus={len(taus)}"
+        )
 
-    np.savez_compressed(
+    # save results
+    np.savez(
         args.out,
-        eps_grid=eps_grid,
-        sigma=args.sigma,
-        trials=args.trials,
-        fix_prob=fix_prob,
-        mean_tfix=mean_tfix,
-        median_tfix=median_tfix,
-        example_traces=example_traces,
+        eps_grid=np.array(eps_grid, dtype=float),
+        mean_tfix=np.array(mean_tfix, dtype=float),
+        fix_prob=np.array(fix_prob, dtype=float),
         taus_by_eps=taus_by_eps,
-        thr_by_eps=thr_by_eps,
+        L=args.L,
+        T_max=args.T_max,
+        sample_every=args.sample_every,
+        trials=args.trials,
     )
+
+    print("\n===================================")
     print(f"Results saved to {args.out}")
+    print("===================================")
+
+
+# ============================================================
 
 if __name__ == "__main__":
     main()
+
