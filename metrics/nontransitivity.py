@@ -187,3 +187,34 @@ def pretty_cycle_report(summary: CycleSummary, max_show: int = 10) -> str:
             lines.append(f"  {t[0]} -> {t[1]} -> {t[2]} -> {t[0]}")
     return "\n".join(lines)
 
+import numpy as np
+
+def dominance_from_payoff(A: np.ndarray, margin: float = 0.0) -> np.ndarray:
+    """D[i,j]=True if i beats j using pairwise advantage A[i,j] - A[j,i] > margin."""
+    A = np.asarray(A, float)
+    diff = A - A.T
+    D = diff > margin
+    np.fill_diagonal(D, False)
+    return D
+
+def list_3cycles(D: np.ndarray):
+    """Return list of (i,j,k) with i->j->k->i (canonical over triples)."""
+    D = np.asarray(D, bool)
+    n = D.shape[0]
+    cycles = []
+    for i in range(n):
+        for j in range(i+1, n):
+            for k in range(j+1, n):
+                if D[i,j] and D[j,k] and D[k,i]:
+                    cycles.append((i,j,k))
+                elif D[i,k] and D[k,j] and D[j,i]:
+                    cycles.append((i,k,j))
+    return cycles
+
+def intransitivity_index(D: np.ndarray) -> float:
+    n = D.shape[0]
+    triples = n*(n-1)*(n-2)//6
+    if triples == 0:
+        return 0.0
+    return len(list_3cycles(D)) / triples
+
