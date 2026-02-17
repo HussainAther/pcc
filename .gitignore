@@ -2,3 +2,5 @@
 *.npz
 *.doc
 *.docx
+*.DS_Store
+*__pycache__
