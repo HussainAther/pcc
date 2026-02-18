@@ -1,6 +1,7 @@
 import numpy as np
 from numba import njit
 from dataclasses import dataclass
+from typing import Optional, Union
 
 @dataclass
 class TrialResult:
@@ -10,6 +11,7 @@ class TrialResult:
     t: np.ndarray
     H: np.ndarray
     p: np.ndarray
+    win_counts: np.ndarray
 
 
 @njit
@@ -68,13 +70,16 @@ def run_spatial_trial(
     sample_every: int = 50,
     base_p: float = 0.5,
     eps_gain: float = 6.0,
-    attempts_per_mcs: int | None = None,
-    fixation_tol: float | None = None,
-    m_sites: int = 5,
+    attempts_per_mcs: Optional[int] = None, # Changed from int | None
+    fixation_tol: Optional[float] = None,  # Changed from float | None
+    m_sites: int = 5, 
+    return_win_counts: bool = False
 ) -> TrialResult:
     np.random.seed(seed)
     grid = np.random.randint(0, 3, size=(L, L), dtype=np.int8)
     counts = np.bincount(grid.ravel(), minlength=3).astype(np.int64)
+    win_counts = np.zeros((3, 3), dtype=np.int64)
+
     N = L * L
 
     attempts = N if attempts_per_mcs is None else int(attempts_per_mcs)
@@ -149,13 +154,15 @@ def run_spatial_trial(
     H = -np.sum(q * np.log(q), axis=1)
 
     return TrialResult(
-        fixated=fixated,
-        t_fix=t_fix,
-        t_drop=t_drop,
-        t=t,
-        H=H,
-        p=p
+    fixated=fixated,
+    t_fix=float(t_fix),
+    t_drop=float(t_drop) if np.isfinite(t_drop) else np.nan,
+    t=t,
+    H=H,
+    p=p,
+    win_counts=win_counts,
     )
+
 
 if __name__ == "__main__":
     params = {
