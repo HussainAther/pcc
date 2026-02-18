@@ -49,6 +49,9 @@ def main():
                     help="NPZ file from run_spatial_sweep.py")
     ap.add_argument("--eps_for_tau", type=float, default=0.2,
                     help="epsilon value to show tau distribution near")
+    # Added the --out argument here
+    ap.add_argument("--out", default="spatial_sweep_scaling.png",
+                    help="filename for the scaling plot")
     args = ap.parse_args()
 
     data = np.load(args.npz, allow_pickle=True)
@@ -80,8 +83,10 @@ def main():
     plt.ylabel(r"Mean collapse time $E[T]$ (MCS)")
     plt.title(rf"Scaling: $E[T]\propto \epsilon^{{-{alpha:.2f}}}$, $R^2={r2:.3f}$")
     plt.tight_layout()
-    plt.savefig("spatial_sweep_scaling.png", dpi=200)
-
+    
+    # Use the argument here instead of the hardcoded string
+    plt.savefig(args.out, dpi=200)
+    
     # pooled tau distribution (safe even if empty)
     if taus_by_eps is None:
         print("No lead-time dictionary found in NPZ; skipping tau plots.")
