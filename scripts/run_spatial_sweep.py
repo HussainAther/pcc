@@ -50,6 +50,7 @@ def parse_args():
     parser.add_argument("--sigma", type=float, default=0.0)
     parser.add_argument("--trials", type=int, default=40)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--m_sites", type=int, default=5) # Kept this, removed the duplicates above it
 
     parser.add_argument("--L", type=int, default=100)
     parser.add_argument("--T_max", type=int, default=50000)
@@ -150,6 +151,7 @@ def main():
                 L=args.L,
                 T_max=args.T_max,
                 sample_every=args.sample_every,
+                m_sites=args.m_sites
             )
 
             if result.fixated:
@@ -196,6 +198,7 @@ def main():
         T_max=args.T_max,
         sample_every=args.sample_every,
         trials=args.trials,
+        m_sites=args.m_sites,
     )
 
     print("\n===================================")
