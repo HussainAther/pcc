@@ -1,92 +1,180 @@
-# PCC Dynamics: A Statistical Mechanical Framework for Non-Transitive Competition
+# PCC / EBID: A Framework for Structured Instability
 
-**PCC** (Pressure, Control, Chaos) is an agent-based modeling framework designed to simulate and analyze **non-transitive competition** within complex systems.
+## Overview
 
-Unlike hierarchical systems where a single strategy dominates, the PCC model demonstrates a stable "Limit Cycle" where three distinct metabolic strategies check and balance one another. This project provides the mathematical and computational tools to observe these dynamics in real-time.
+This repository develops a unified framework for understanding **dynamical systems under competing constraints**, centered on:
 
----
-
-## 📐 The Core Triangle
-
-The system is governed by a non-transitive "Rock-Paper-Scissors" logic, defined by energy expenditure and information processing:
-
-| Strategy | Primary Mechanism | Target | Vulnerability |
-| --- | --- | --- | --- |
-| **Pressure (P)** | **Massive Force.** High-energy, low-entropy directional vectors. | **Chaos** | **Control** |
-| **Control (Co)** | **Informational Precision.** Reduction of local variance through modeling. | **Pressure** | **Chaos** |
-| **Chaos (Ch)** | **Stochastic Disruption.** High Kolmogorov complexity/unpredictability. | **Control** | **Pressure** |
+* **PCC (Pressure–Chaos–Control)** — a minimal structural interaction topology
+* **EBID (Entropy-Based Instability Dynamics)** — a measurable link between entropy and instability
+* **Cross-domain applications** — biology, control systems, and beyond
 
 ---
 
-## 🔬 Scientific Foundations
+## 🔺 The Core Idea
 
-### 1. Statistical Mechanics
+Most systems are modeled as:
 
-We treat the system as a collection of agents whose macro-state is defined by **Entropy ()** and **Work ()**. The PCC model prevents the system from reaching "Heat Death" (a state of zero-change) by ensuring that no single strategy can ever achieve a Nash Equilibrium.
+* stable
+* convergent
+* or optimizable
 
-### 2. Information Theory
+This project takes a different view:
 
-* **Control** acts as a filter, decreasing Shannon Entropy to gain a tactical advantage.
-* **Chaos** introduces "Noise" that exceeds the processing capacity of the Control filter, rendering the model's predictions null.
-
-### 3. Evolutionary Stable Strategies (ESS)
-
-In biology, this is observed in "Side-blotched Lizard" mating cycles and microbial competitions. This repo simulates these interactions to find the **"Stability Zone"** where all three strategies coexist.
+> **Instability is not a flaw — it is a structural necessity.**
 
 ---
 
-## 🛠 Features
+### PCC: The Minimal Structure
 
-* **`simulation.py`**: A differential equation solver (ODE) that tracks the population density of P, Co, and Ch over time.
-* **`spatial_grid.py`**: A Cellular Automata simulation demonstrating the emergence of **Spiral Waves**—the mathematical fingerprint of non-transitive stability.
-* **Limit Cycle Analysis**: Tools to measure if a system is heading toward extinction or healthy oscillation.
+Every adaptive system must balance three competing roles:
+
+| Role             | Function                                             |
+| ---------------- | ---------------------------------------------------- |
+| **Pressure (P)** | Drives change, amplification, or optimization        |
+| **Chaos (Ch)**   | Introduces variability, disruption, unpredictability |
+| **Control (C)**  | Stabilizes, regulates, and constrains                |
+
+These interact **non-transitively**:
+
+* Control suppresses Pressure
+* Chaos disrupts Control
+* Pressure suppresses Chaos
+
+---
+
+### 🔁 Result
+
+This produces:
+
+* cyclic dynamics
+* instability regimes
+* oscillations and transitions
+
+Classical Rock–Paper–Scissors systems are:
+
+> **approximate projections of this deeper structure**
+
+---
+
+## 📊 EBID: Measuring Instability
+
+EBID (Entropy-Based Instability Dynamics) provides:
+
+* entropy deficit as a proxy for system deviation
+* growth rates linked to dynamical instability
+* a bridge between theory and observable data
+
+---
+
+## 🧪 Applications
+
+This repository includes working models and simulations across domains:
+
+### 🌱 Embryogenesis (Biology)
+
+* Pattern formation as regulated instability
+* Morphogen gradients (Pressure)
+* Regulatory networks (Control)
+* Stochastic variation (Chaos)
+
+### ⚙️ Control Systems (Engineering)
+
+* Tracking vs stability vs disturbance tradeoffs
+* PCC-inspired controllers vs classical control
+* Entropy and variability in control trajectories
+
+### 🖥 Distributed Systems (in progress)
+
+* Load (Pressure), coordination (Control), failures (Chaos)
+* Robustness under uncertainty
+
+---
+
+## 📁 Repository Structure
+
+```text
+pcc/
+  manuscripts/          # PCC, EBID, and universal law papers
+  theory/               # core mathematical models
+  applications/         # embryogenesis, control, etc.
+  experiments/          # simulation scripts
+  figures/              # generated figures
+  data/                 # sweep results
+  utils/                # shared utilities
+```
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-* Python 3.8+
-* NumPy
-* Matplotlib
-* SciPy
-
-### Installation
-
 ```bash
 git clone https://github.com/HussainAther/pcc.git
 cd pcc
 pip install -r requirements.txt
-
 ```
 
-### Running the Simulation
-
-To see the population densities over time:
+Run core simulations:
 
 ```bash
-python simulation.py
-
+python applications/control/sim_control_pcc.py
+python applications/embryogenesis/sim_embryogenesis_pcc.py
 ```
 
 ---
 
-## 📜 Limitations & Guardrails
+## 🔬 What This Is (and Is Not)
 
-For the PCC model to remain empirically valid, the following conditions must be met:
+### This is:
 
-1. **Agency**: Agents must have the capacity to interact or change state based on encounters.
-2. **Balance**: The interaction coefficients () must be tuned to prevent "monoculture collapse."
-3. **Stochasticity**: Chaos must be mathematically random (stochastic), not just a complex pattern that a better Control agent could predict.
+* a **research program**
+* a **theoretical framework**
+* a set of **computational experiments**
+
+### This is NOT:
+
+* a finished unified theory
+* a single-domain model
+* a claim that all systems reduce to PCC
+
+---
+
+## 🧭 Research Direction
+
+This work aims to answer:
+
+* Why do cyclic/non-transitive dynamics recur across domains?
+* When is instability necessary vs harmful?
+* Can instability be **measured and controlled**?
+* What is the minimal structure of adaptive systems?
 
 ---
 
 ## 🤝 Contributing
 
-This is an open-source project aimed at unifying behavioral strategies through math. We welcome contributions in:
+Contributions are welcome in:
 
-* Multi-Agent Reinforcement Learning (MARL) implementations.
-* Thermodynamic analysis of the PCC cycle.
-* New visualization modules for spatial dynamics.
+* simulation and modeling
+* theoretical extensions
+* cross-domain applications
+* visualization and analysis tools
+
+---
+
+## 📌 Status
+
+Active research — expect:
+
+* rapid iteration
+* evolving structure
+* experimental code
+
+---
+
+## 🧠 Summary
+
+> PCC provides the structure.
+> EBID provides the measurement.
+> Applications test the theory.
+
+---
 
