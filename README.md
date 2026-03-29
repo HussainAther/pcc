@@ -8,6 +8,14 @@ This repository develops a unified framework for understanding **dynamical syste
 * **EBID (Entropy-Based Instability Dynamics)** — a measurable link between entropy and instability
 * **Cross-domain applications** — biology, control systems, and beyond
 
+## Core Claim
+
+Instability in dynamical systems can be:
+- structurally generated (PCC)
+- quantitatively measured (EBID via entropy)
+
+This repository explores both.
+
 ---
 
 ## 🔺 The Core Idea
