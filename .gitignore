@@ -3,4 +3,5 @@
 *.doc
 *.docx
 *.DS_Store
+*.npy
 *__pycache__
